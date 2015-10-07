@@ -7,6 +7,7 @@ use PHPSC\PagSeguro\Credentials;
 use PHPSC\PagSeguro\Environments\Production;
 use PHPSC\PagSeguro\Environments\Sandbox;
 use PHPSC\PagSeguro\Requests\Checkout\CheckoutService;
+use PHPSC\PagSeguro\Requests\PreApprovals\PreApprovalService;
 
 class LaravelPagseguroServiceProvider extends ServiceProvider
 {
@@ -37,6 +38,11 @@ class LaravelPagseguroServiceProvider extends ServiceProvider
 
         $this->app->bind('PHPSC\PagSeguro\Requests\Checkout\CheckoutService', function () {
             return new CheckoutService($this->app->make('PHPSC\PagSeguro\Credentials'));
+        });
+
+        // Signature Services
+        $this->app->bind(PreApprovalService::class, function () {
+            return new PreApprovalService($this->app->make(Credentials::class));
         });
     }
 }
